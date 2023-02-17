@@ -7,7 +7,7 @@ cp etcd /usr/local/bin/
 cp etcdctl /usr/local/bin/
 cd
 rm -rf etcd*
-**********Install on etcd1**********
+
 VERSION=$(curl --silent "https://api.github.com/repos/cloudflare/cfssl/releases/latest" | grep '"tag_name"' | sed -E 's/.*"([^"]+)".*/\1/')
 VNUMBER=${VERSION#"v"}
 wget https://github.com/cloudflare/cfssl/releases/download/${VERSION}/cfssl_${VNUMBER}_linux_amd64 -O cfssl
@@ -20,6 +20,8 @@ wget https://github.com/cloudflare/cfssl/releases/download/${VERSION}/cfssljson_
 chmod +x cfssljson
 sudo mv cfssljson /usr/local/bin
 cfssljson -version
+**********Install on etcd1**********
+
 mkdir cert && cd cert
 cat > ca-config.json <<EOF
 {
