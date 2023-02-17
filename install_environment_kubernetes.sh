@@ -26,11 +26,8 @@ curl -fsSL https://packages.cloud.google.com/apt/doc/apt-key.gpg -o /etc/apt/key
 echo "deb [signed-by=/etc/apt/keyrings/kubernetes-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" | tee /etc/apt/sources.list.d/kubernetes.list
 apt -y update
 apt -y install kubeadm kubelet kubectl
-cat > /etc/sysctl.d/99-k8s-cri.conf <<EOF
-net.bridge.bridge-nf-call-iptables=1
-net.bridge.bridge-nf-call-ip6tables=1
-net.ipv4.ip_forward=1
+cat > /etc/default/kubelet <<EOF
+KUBELET_EXTRA_ARGS=--cgroup-driver=systemd --container-runtime=remote --container-runtime-endpoint=unix:///run/containerd/containerd.sock
 EOF
 echo -e "1\n" | update-alternatives --config iptables
-KUBELET_EXTRA_ARGS=--cgroup-driver=systemd --container-runtime=remote --container-runtime-endpoint=unix:///run/containerd/containerd.sock
 systemctl restart containerd.service && systemctl status containerd
