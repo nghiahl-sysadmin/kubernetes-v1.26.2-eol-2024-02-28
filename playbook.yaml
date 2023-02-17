@@ -3,7 +3,7 @@
   hosts: all
   become: true
   tasks:
-    - name: Clone k8s-setup repository
+    - name: Kubernetes setup environment repository
       git:
         repo: https://github.com/nghiahl-sysadmin/kubernetes-v1.26.1-eol-2024-02-28.git
         dest: /tmp/k8s-setup
