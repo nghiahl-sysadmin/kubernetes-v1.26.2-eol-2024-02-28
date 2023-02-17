@@ -49,11 +49,11 @@ cat > ca-csr.json <<EOF
     },
     "names": [
       {
-        "C": "VN",
+        "C": "VNM",
         "L": "Vietnamese",
         "O": "Kubernetes",
         "OU": "ETCD-CA",
-        "ST": "HaNoi"
+        "ST": "HCM"
       }
     ]
 }
@@ -85,11 +85,11 @@ cat > etcd-csr.json <<EOF
     },
     "names": [
       {
-        "C": "VN",
+        "C": "VNM",
         "L": "Vietnamese",
         "O": "Kubernetes",
         "OU": "etcd",
-        "ST": "HaNoi"
+        "ST": "HCM"
       }
     ]
 }
