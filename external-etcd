@@ -126,3 +126,4 @@ WantedBy=multi-user.target
 EOF
 systemctl daemon-reload
 systemctl restart etcd.service && systemctl status etcd.service
+curl -L http://localhost:2379/health | grep -v debugging
