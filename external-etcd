@@ -60,6 +60,8 @@ cfssl gencert -initca ca-csr.json | cfssljson -bare ca
 
 export ETCD1_IP="10.10.10.17"
 export ETCD2_IP="10.10.10.18"
+export ETCD_NAME=$(hostname -s)
+export NODE_IP="10.10.10.17"
 
 cat > etcd-csr.json <<EOF
 {
