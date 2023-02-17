@@ -1,3 +1,4 @@
+#!/bin/bash
 wget https://github.com/containerd/containerd/releases/download/v1.6.14/containerd-1.6.14-linux-amd64.tar.gz
 sudo tar Czxvf /usr/local containerd-1.6.14-linux-amd64.tar.gz
 wget https://raw.githubusercontent.com/containerd/containerd/main/containerd.service
@@ -26,9 +27,10 @@ echo "deb [signed-by=/etc/apt/keyrings/kubernetes-keyring.gpg] https://apt.kuber
 apt -y update
 apt -y install kubeadm kubelet kubectl
 cat > /etc/sysctl.d/99-k8s-cri.conf <<EOF
-update-alternatives --config iptables
-1
-
-KUBELET_EXTRA_ARGS=--cgroup-driver=systemd --container-runtime=remote --container-runtime-endpoint=unix:///run/containerd/containerd.sock
+net.bridge.bridge-nf-call-iptables=1
+net.bridge.bridge-nf-call-ip6tables=1
+net.ipv4.ip_forward=1
 EOF
+echo -e "1\n" | update-alternatives --config iptables
+KUBELET_EXTRA_ARGS=--cgroup-driver=systemd --container-runtime=remote --container-runtime-endpoint=unix:///run/containerd/containerd.sock
 systemctl restart containerd.service && systemctl status containerd
