@@ -1,19 +1,24 @@
 ---
-- hosts: your_target_hosts
-  become: yes
+- name: Run k8s-setup commands
+  hosts: all
+  become: true
   tasks:
-    - name: Clone Kubernetes repository
+    - name: Clone k8s-setup repository
       git:
-        repo: https://github.com/nghiahl-sysadmin/kubernetes.git
-        dest: /opt/kubernetes
-        version: master
-      register: git_clone
+        repo: https://github.com/nghiahl-sysadmin/kubernetes-v1.26.1-eol-2024-02-28.git
+        dest: /tmp/k8s-setup
+
+    - name: Set execute permission on installation script
+      file:
+        path: /tmp/k8s-setup/install_environment_kubernetes.sh
+        mode: u+x
 
     - name: Run installation script
-      command: chmod +x /opt/kubernetes/install_environment_kubernetes.sh && /opt/kubernetes/install_environment_kubernetes.sh
-      when: git_clone.changed
+      shell: /tmp/k8s-setup/install_environment_kubernetes.sh
+      args:
+        chdir: /tmp/k8s-setup
 
-    - name: Remove Kubernetes repository
+    - name: Remove k8s-setup directory
       file:
-        path: /opt/kubernetes
+        path: /tmp/k8s-setup
         state: absent
