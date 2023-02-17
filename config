@@ -1,0 +1,32 @@
+*************************Install in Control Plane*************************
+
+kubeadm init --control-plane-endpoint="10.10.10.10:6443" --upload-certs --apiserver-advertise-address=10.10.10.13 --pod-network-cidr=192.168.0.0/16 --cri-socket=unix:///run/containerd/containerd.sock
+
+mkdir -p $HOME/.kube
+sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
+kubectl apply -f https://raw.githubusercontent.com/projectcalico/calico/v3.25.0/manifests/calico.yaml
+*************************Regenerate Kubernetes Join Command To Join Control Plane & Worker Node*************************
++ Worker Node
+
+kubeadm token create --print-join-command
++ Control Plane
+
+echo $(kubeadm token create --print-join-command) --control-plane --certificate-key $(kubeadm init phase upload-certs --upload-certs | grep -vw -e certificate -e Namespace)
++ Exit Cluster ALL Node
+
+kubeadm reset
++ Bonus
+
+kubectl rollout restart deployment coredns --namespace kube-system
+kubeadm init phase upload-certs --upload-cert
+kubectl describe nodes | egrep "Taints:|Name:"
+*************************Reference Library*************************
+
+https://viblo.asia/p/kubernetes-practice-logging-with-logstash-and-fluentd-by-sidecar-container-LzD5doreljY?fbclid=IwAR09qbmmmBzjXIvEdkE2IEAxvCYjGjPrGV1hXIeCcT97KDSPyhuoB1iOpK0
+https://www.learnitguide.net/2018/10/kubernetes-tutorial-for-beginners-full.html
+https://www.youtube.com/@justmeandopensource/videos
+https://kubesphere.io/docs/v3.3/installing-on-linux/high-availability-configurations/set-up-ha-cluster-using-keepalived-haproxy/
+https://www.itzgeek.com/how-tos/linux/ubuntu-how-tos/install-containerd-on-ubuntu-22-04.html
+https://www.server-world.info/en/note?os=Ubuntu_22.04&p=kubernetes&f=1
