@@ -95,18 +95,8 @@ cfssl gencert -ca=ca.pem -ca-key=ca-key.pem -config=ca-config.json -profile=etcd
 
 }
 
-**********Install on etcd1 & etcd2**********
+#Copy the certificates to etcd nodes
 
-wget https://github.com/etcd-io/etcd/releases/download/v3.5.7/etcd-v3.5.7-linux-amd64.tar.gz
-tar -zvxf etcd-v3.5.7-linux-amd64.tar.gz
-cp etcd-v3.5.7-linux-amd64/etcd /usr/local/bin/
-cp etcd-v3.5.7-linux-amd64/etcdctl /usr/local/bin/
-rm -rf etcd*
-**********Install on etcd1**********
-
-
-
-***********Install on Node ETCD***********
 {
 
 declare -a NODES=(10.10.10.17 10.10.10.18)
@@ -117,12 +107,29 @@ done
 
 }
 
+#Install on all etcd nodes
+#Copy the certificates to a standard location
 
-mkdir /etc/etcd
-mkdir /etc/etcd/ssl
-cp ca.pem /etc/etcd/ssl/
-cp etcd.pem /etc/etcd/ssl/
-cp etcd-key.pem /etc/etcd/ssl/
+{
+
+  mkdir -p /etc/etcd/ssl
+  mv ca.pem etcd.pem etcd-key.pem /etc/etcd/ssl/
+  
+}
+
+#Download etcd & etcdctl binaries from Github
+
+{
+
+wget https://github.com/etcd-io/etcd/releases/download/v3.5.7/etcd-v3.5.7-linux-amd64.tar.gz
+tar -zvxf etcd-v3.5.7-linux-amd64.tar.gz
+cp etcd-v3.5.7-linux-amd64/etcd /usr/local/bin/
+cp etcd-v3.5.7-linux-amd64/etcdctl /usr/local/bin/
+rm -rf etcd*
+
+}
+
+#Create systemd unit file for etcd service
 
 {
 
@@ -163,8 +170,15 @@ WantedBy=multi-user.target
 EOF
 
 }
-systemctl daemon-reload
-systemctl restart etcd.service && systemctl status etcd.service
+
+#Enable and Start etcd service
+
+{
+  systemctl daemon-reload
+  systemctl enable --now etcd && systemctl status etcd
+}
+
+#Verify Etcd cluster status
 
 ETCDCTL_API=3 etcdctl \
   --endpoints=https://127.0.0.1:2379 \
@@ -173,6 +187,18 @@ ETCDCTL_API=3 etcdctl \
   --key=/etc/etcd/ssl/etcd-key.pem \
   member list
 
+#Better to export these as environment variables and connect to the clutser instead of a specific node
+
+export ETCDCTL_API=3 
+export ETCDCTL_ENDPOINTS=https://10.10.10.17:2379,https://10.10.10.18:2379
+export ETCDCTL_CACERT=/etc/etcd/ssl/ca.pem
+export ETCDCTL_CERT=/etc/etcd/ssl/etcd.pem
+export ETCDCTL_KEY=/etc/etcd/ssl/etcd-key.pem
+
+#And now its a lot easier
+
+etcdctl member list
+etcdctl endpoint status
 etcdctl endpoint health
 curl -L http://localhost:2379/health | grep -v debugging
 
