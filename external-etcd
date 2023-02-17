@@ -89,6 +89,7 @@ cfssl gencert -ca=ca.pem -ca-key=ca-key.pem -config=ca-config.json -profile=etcd
 
 {
 
+***********Install on Node ETCD***********
 declare -a NODES=(10.10.10.17 10.10.10.18)
 
 for node in ${NODES[@]}; do
@@ -104,8 +105,14 @@ cp ca.pem /etc/etcd/ssl/
 cp etcd.pem /etc/etcd/ssl/
 cp etcd-key.pem /etc/etcd/ssl/
 
-export ETCD_NAME=$(hostname -s)
-export NODE_IP="10.10.10.17"
+{
+
+NODE_IP="10.10.10.17"
+
+ETCD_NAME=$(hostname -s)
+
+ETCD1_IP="10.10.10.17"
+ETCD2_IP="10.10.10.18"
 
 cat > /etc/systemd/system/etcd.service <<EOF
 [Unit]
@@ -135,7 +142,18 @@ RestartSec=5
 [Install]
 WantedBy=multi-user.target
 EOF
+
+}
 systemctl daemon-reload
 systemctl restart etcd.service && systemctl status etcd.service
+
+ETCDCTL_API=3 etcdctl \
+  --endpoints=https://127.0.0.1:2379 \
+  --cacert=/etc/etcd/ssl/ca.pem \
+  --cert=/etc/etcd/ssl/etcd.pem \
+  --key=/etc/etcd/ssl/etcd-key.pem \
+  member list
+
 etcdctl endpoint health
 curl -L http://localhost:2379/health | grep -v debugging
+
