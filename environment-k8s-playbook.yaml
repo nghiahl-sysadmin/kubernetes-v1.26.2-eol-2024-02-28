@@ -97,15 +97,14 @@
   hosts: all
   become: true
   tasks:
-    - name: Add Kubernetes repository GPG key
+   - name: Add Kubernetes repository GPG key
       apt_key:
         url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
         state: present
-    - name: Add Kubernetes repository
-      apt_repository:
-        repo: deb [signed-by=/etc/apt/trusted.gpg.d/kubernetes.gpg] https://apt.kubernetes.io/ kubernetes-xenial main
-        state: present
-    - name: Install Kubernetes packages
+   - name: Add Kubernetes repository
+      command: echo "deb [signed-by=/etc/apt/keyrings/kubernetes-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" | tee /etc/apt/sources.list.d/kubernetes.list
+   
+   - name: Install Kubernetes packages
       apt:
         name:
           - kubelet
