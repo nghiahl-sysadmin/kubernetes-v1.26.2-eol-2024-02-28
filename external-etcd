@@ -1,4 +1,7 @@
-**********Install on Local Linux Ubuntu**********
+#Install on Local Linux Ubuntu
+#Generate TLS certificates
+#Download required binaries
+
 VERSION=$(curl --silent "https://api.github.com/repos/cloudflare/cfssl/releases/latest" | grep '"tag_name"' | sed -E 's/.*"([^"]+)".*/\1/')
 VNUMBER=${VERSION#"v"}
 wget https://github.com/cloudflare/cfssl/releases/download/${VERSION}/cfssl_${VNUMBER}_linux_amd64 -O cfssl
@@ -12,7 +15,10 @@ chmod +x cfssljson
 sudo mv cfssljson /usr/local/bin
 cfssljson -version
 
+#Create a Certificate Authority (CA)
+
 mkdir cert && cd cert
+{
 
 cat > ca-config.json <<EOF
 {
@@ -50,6 +56,11 @@ cat > ca-csr.json <<EOF
 EOF
 
 cfssl gencert -initca ca-csr.json | cfssljson -bare ca
+
+}
+
+#Create TLS certificates
+
 {
 
 export ETCD1_IP="10.10.10.17"
@@ -80,8 +91,10 @@ cat > etcd-csr.json <<EOF
 }
 EOF
 
-}
 cfssl gencert -ca=ca.pem -ca-key=ca-key.pem -config=ca-config.json -profile=etcd etcd-csr.json | cfssljson -bare etcd
+
+}
+
 **********Install on etcd1 & etcd2**********
 
 wget https://github.com/etcd-io/etcd/releases/download/v3.5.7/etcd-v3.5.7-linux-amd64.tar.gz
