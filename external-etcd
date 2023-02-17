@@ -59,8 +59,6 @@ cfssl gencert -initca ca-csr.json | cfssljson -bare ca
 
 export ETCD1_IP="10.10.10.17"
 export ETCD2_IP="10.10.10.18"
-export ETCD_NAME=$(hostname -s)
-export NODE_IP="10.10.10.17"
 
 cat > etcd-csr.json <<EOF
 {
@@ -89,11 +87,25 @@ EOF
 
 cfssl gencert -ca=ca.pem -ca-key=ca-key.pem -config=ca-config.json -profile=etcd etcd-csr.json | cfssljson -bare etcd
 
+{
+
+declare -a NODES=(10.10.10.17 10.10.10.18)
+
+for node in ${NODES[@]}; do
+  scp ca.pem etcd.pem etcd-key.pem root@$node: 
+done
+
+}
+
+
 mkdir /etc/etcd
 mkdir /etc/etcd/ssl
 cp ca.pem /etc/etcd/ssl/
 cp etcd.pem /etc/etcd/ssl/
 cp etcd-key.pem /etc/etcd/ssl/
+
+export ETCD_NAME=$(hostname -s)
+export NODE_IP="10.10.10.17"
 
 cat > /etc/systemd/system/etcd.service <<EOF
 [Unit]
