@@ -8,4 +8,4 @@ systemctl restart sshd
 
 # Set Root password
 echo "[TASK 2] Set root password"
-echo -e "1\1" | passwd root >/dev/null 2>&
+echo -e "1\n1" | passwd root >/dev/null 2>&
