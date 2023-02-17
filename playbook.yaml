@@ -1,24 +1,17 @@
----
-- name: Run k8s-setup commands
+- name: Install Environment for Multiple Kubernetes
   hosts: all
   become: true
   tasks:
-    - name: Kubernetes setup environment repository
-      git:
-        repo: https://github.com/nghiahl-sysadmin/kubernetes-v1.26.1-eol-2024-02-28.git
-        dest: /tmp/k8s-setup
-
-    - name: Set execute permission on installation script
+    - name: Download bash script from github
+      get_url:
+        url: "https://raw.githubusercontent.com/nghiahl-sysadmin/kubernetes-v1.26.1-eol-2024-02-28/main/install_environment_kubernetes.sh"
+        dest: "/tmp/install_environment_kubernetes.sh"
+        mode: '0755'
+        
+    - name: Run bash script to install environment kubernetes
+      command: "/tmp/install_environment_kubernetes.sh"
+      
+    - name: Remove bash script
       file:
-        path: /tmp/k8s-setup/install_environment_kubernetes.sh
-        mode: u+x
-
-    - name: Run installation script
-      shell: /tmp/k8s-setup/install_environment_kubernetes.sh
-      args:
-        chdir: /tmp/k8s-setup
-
-    - name: Remove k8s-setup directory
-      file:
-        path: /tmp/k8s-setup
+        path: "/tmp/install_environment_kubernetes.sh"
         state: absent
