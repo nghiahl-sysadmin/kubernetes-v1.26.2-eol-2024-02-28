@@ -1,6 +1,6 @@
 - name: Configure Kubernetes nodes
   become: true
-  hosts: kubernetes-nodes
+  hosts: all
 
   tasks:
     - name: Extend logical volume
