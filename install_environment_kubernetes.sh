@@ -1,4 +1,12 @@
 #!/bin/bash
+lvextend --resizefs -l +100%FREE /dev/mapper/ubuntu--vg-ubuntu--lv
+echo '10.10.10.13 k8s-api1
+10.10.10.14 k8s-api2
+10.10.10.15 k8s-worker1
+10.10.10.16 k8s-worker2
+10.10.10.17 k8s-etcd1
+10.10.10.18 k8s-etcd2
+10.10.10.10 ha-vip' > /etc/hosts
 wget https://github.com/containerd/containerd/releases/download/v1.6.14/containerd-1.6.14-linux-amd64.tar.gz
 sudo tar Czxvf /usr/local containerd-1.6.14-linux-amd64.tar.gz
 wget https://raw.githubusercontent.com/containerd/containerd/main/containerd.service
