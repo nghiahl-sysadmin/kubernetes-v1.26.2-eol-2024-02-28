@@ -1,11 +1,16 @@
 #NOTE:
+#Định nghĩa CA
 #CA là viết tắt của từ Certificate Authority nghĩa là một tổ chức hoặc đơn vị có trách nhiệm cấp phát, quản lý và xác minh tính chính xác của các chứng chỉ số (digital certificates).
 #Chứng chỉ số (Digital Certificates) là một tài liệu điện tử dùng để xác định danh tính của một cá nhân, một tổ chức hoặc một thiết bị trong một mạng máy tính.
+
+#Các tham số viết tắt khi tạo Certificates
 #"C" (Country): đại diện cho mã quốc gia (country code) của quốc gia mà CA đó đặt tại.
 #"L" (Locality): đại diện cho thành phố hoặc vùng địa lý (locality) mà CA đó đặt tại.
 #"O" (Organization): đại diện cho tên tổ chức (organization name) hoặc công ty mà CA đó đại diện.
 #"OU" (Organizational Unit): đại diện cho tên đơn vị tổ chức (organizational unit name) bên trong tổ chức hoặc công ty mà CA đó đại diện.
 #"ST" (State or Province): đại diện cho tên tiểu bang hoặc tỉnh (state or province) mà CA đó đặt tại.
+
+#REFERENCE: https://etcd.io/docs/v3.5/
 
 #Install on Local Linux Ubuntu
 #Generate TLS certificates
