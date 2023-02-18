@@ -58,11 +58,11 @@ cat > ca-csr.json <<EOF
     },
     "names": [
       {
-        "C": "VNM",
-        "L": "Vietnamese",
-        "O": "Kubernetes",
-        "OU": "ETCD-CA",
-        "ST": "HCM"
+        "C": "VN",
+        "L": "Ho_Chi_Minh",
+        "O": "FPT_Telecom",
+        "OU": "CSOC_ETCD_CA",
+        "ST": "District_7"
       }
     ]
 }
@@ -94,11 +94,11 @@ cat > etcd-csr.json <<EOF
     },
     "names": [
       {
-        "C": "VNM",
-        "L": "Vietnamese",
-        "O": "Kubernetes",
-        "OU": "etcd",
-        "ST": "HCM"
+        "C": "VN",
+        "L": "Ho_Chi_Minh",
+        "O": "FPT_Telecom",
+        "OU": "CSOC_ETCD_TLS",
+        "ST": "District_7"
       }
     ]
 }
