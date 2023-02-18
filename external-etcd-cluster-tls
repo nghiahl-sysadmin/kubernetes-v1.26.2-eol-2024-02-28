@@ -1,6 +1,6 @@
 #NOTE:
 #CA là viết tắt của từ Certificate Authority nghĩa là một tổ chức hoặc đơn vị có trách nhiệm cấp phát, quản lý và xác minh tính chính xác của các chứng chỉ số (digital certificates).
-# Chứng chỉ số (Digital Certificates) là một tài liệu điện tử dùng để xác định danh tính của một cá nhân, một tổ chức hoặc một thiết bị trong một mạng máy tính.
+#Chứng chỉ số (Digital Certificates) là một tài liệu điện tử dùng để xác định danh tính của một cá nhân, một tổ chức hoặc một thiết bị trong một mạng máy tính.
 #"C" (Country): đại diện cho mã quốc gia (country code) của quốc gia mà CA đó đặt tại.
 #"L" (Locality): đại diện cho thành phố hoặc vùng địa lý (locality) mà CA đó đặt tại.
 #"O" (Organization): đại diện cho tên tổ chức (organization name) hoặc công ty mà CA đó đại diện.
@@ -125,8 +125,8 @@ done
 
 {
 
-  mkdir -p /etc/etcd/ssl
-  mv ca.pem etcd.pem etcd-key.pem /etc/etcd/ssl/
+  mkdir -p /etc/etcd/pki
+  mv ca.pem etcd.pem etcd-key.pem /etc/etcd/pki/
   
 }
 
@@ -161,12 +161,12 @@ Description=etcd
 Type=notify
 ExecStart=/usr/local/bin/etcd
   --name ${ETCD_NAME}
-  --cert-file=/etc/etcd/ssl/etcd.pem \\
-  --key-file=/etc/etcd/ssl/etcd-key.pem \\
-  --peer-cert-file=/etc/etcd/ssl/etcd.pem \\
-  --peer-key-file=/etc/etcd/ssl/etcd-key.pem \\
-  --trusted-ca-file=/etc/etcd/ssl/ca.pem \\
-  --peer-trusted-ca-flie=etc/etcd/ssl/ca.pem \\
+  --cert-file=/etc/etcd/pki/etcd.pem \\
+  --key-file=/etc/etcd/pki/etcd-key.pem \\
+  --peer-cert-file=/etc/etcd/pki/etcd.pem \\
+  --peer-key-file=/etc/etcd/pki/etcd-key.pem \\
+  --trusted-ca-file=/etc/etcd/pki/ca.pem \\
+  --peer-trusted-ca-flie=etc/etcd/pki/ca.pem \\
   --peer-client-cert-auth \\
   --initial-advertise-peer-urls https://${NODE_IP}:2380 \\
   --listen-peer-urls https://${NODE_IP}:2380 \\
@@ -195,18 +195,18 @@ EOF
 
 ETCDCTL_API=3 etcdctl \
   --endpoints=https://127.0.0.1:2379 \
-  --cacert=/etc/etcd/ssl/ca.pem \
-  --cert=/etc/etcd/ssl/etcd.pem \
-  --key=/etc/etcd/ssl/etcd-key.pem \
+  --cacert=/etc/etcd/pki/ca.pem \
+  --cert=/etc/etcd/pki/etcd.pem \
+  --key=/etc/etcd/pki/etcd-key.pem \
   member list
 
 #Better to export these as environment variables and connect to the clutser instead of a specific node
 
 export ETCDCTL_API=3 
 export ETCDCTL_ENDPOINTS=https://10.10.10.17:2379,https://10.10.10.18:2379
-export ETCDCTL_CACERT=/etc/etcd/ssl/ca.pem
-export ETCDCTL_CERT=/etc/etcd/ssl/etcd.pem
-export ETCDCTL_KEY=/etc/etcd/ssl/etcd-key.pem
+export ETCDCTL_CACERT=/etc/etcd/pki/ca.pem
+export ETCDCTL_CERT=/etc/etcd/pki/etcd.pem
+export ETCDCTL_KEY=/etc/etcd/pki/etcd-key.pem
 
 #And now its a lot easier
 
