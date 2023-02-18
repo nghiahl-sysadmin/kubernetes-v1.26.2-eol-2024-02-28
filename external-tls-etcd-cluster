@@ -136,7 +136,6 @@ done
   mkdir -p /var/lib/etcd/
   chown -R root:root /var/lib/etcd/
 
-  
 }
 
 #Download etcd & etcdctl binaries from Github
