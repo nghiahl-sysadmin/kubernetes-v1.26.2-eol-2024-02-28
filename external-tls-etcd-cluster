@@ -219,4 +219,3 @@ etcdctl member list
 etcdctl endpoint status
 etcdctl endpoint health
 curl -L http://localhost:2379/health | grep -v debugging
-
