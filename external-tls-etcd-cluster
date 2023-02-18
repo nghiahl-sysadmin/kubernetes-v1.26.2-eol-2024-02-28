@@ -133,6 +133,9 @@ done
   mkdir -p /etc/etcd/pki
   mv ca.pem etcd.pem etcd-key.pem /etc/etcd/pki/
   ls -l /etc/etcd/pki
+  mkdir -p /var/lib/etcd/
+  chown -R root:root /var/lib/etcd/
+
   
 }
 
