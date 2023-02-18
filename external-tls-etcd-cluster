@@ -174,7 +174,7 @@ ExecStart=/usr/local/bin/etcd
   --peer-cert-file=/etc/etcd/pki/etcd.pem \\
   --peer-key-file=/etc/etcd/pki/etcd-key.pem \\
   --trusted-ca-file=/etc/etcd/pki/ca.pem \\
-  --peer-trusted-ca-flie=etc/etcd/pki/ca.pem \\
+  --peer-trusted-ca-file=etc/etcd/pki/ca.pem \\
   --peer-client-cert-auth \\
   --initial-advertise-peer-urls https://${NODE_IP}:2380 \\
   --listen-peer-urls https://${NODE_IP}:2380 \\
