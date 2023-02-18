@@ -168,13 +168,13 @@ After=network.target
 Type=notify
 WorkingDirectory=/var/lib/etcd/
 ExecStart=/usr/local/bin/etcd
-  --name ${ETCD_NAME}
+  --name ${ETCD_NAME} \\
   --cert-file=/etc/etcd/pki/etcd.pem \\
   --key-file=/etc/etcd/pki/etcd-key.pem \\
   --peer-cert-file=/etc/etcd/pki/etcd.pem \\
   --peer-key-file=/etc/etcd/pki/etcd-key.pem \\
   --trusted-ca-file=/etc/etcd/pki/ca.pem \\
-  --peer-trusted-ca-file=etc/etcd/pki/ca.pem \\
+  --peer-trusted-ca-file=/etc/etcd/pki/ca.pem \\
   --peer-client-cert-auth \\
   --initial-advertise-peer-urls https://${NODE_IP}:2380 \\
   --listen-peer-urls https://${NODE_IP}:2380 \\
