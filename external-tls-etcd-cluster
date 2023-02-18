@@ -30,9 +30,9 @@ cfssljson -version
 
 #Create a Certificate Authority (CA)
 
-mkdir cert && cd cert
 {
 
+mkdir cert && cd cert
 cat > ca-config.json <<EOF
 {
     "signing": {
