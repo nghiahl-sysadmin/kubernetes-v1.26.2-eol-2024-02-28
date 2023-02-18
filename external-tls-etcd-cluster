@@ -162,9 +162,11 @@ ETCD2_IP="10.10.10.18"
 cat > /etc/systemd/system/etcd.service <<EOF
 [Unit]
 Description=etcd
+After=network.target
 
 [Service]
 Type=notify
+WorkingDirectory=/var/lib/etcd/
 ExecStart=/usr/local/bin/etcd
   --name ${ETCD_NAME}
   --cert-file=/etc/etcd/pki/etcd.pem \\
