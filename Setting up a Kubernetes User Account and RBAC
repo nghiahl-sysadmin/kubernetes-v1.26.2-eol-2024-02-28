@@ -1,0 +1,30 @@
+tạo tài khoản kubernetes
+sudo useradd -m -G sudo nghiahl
+su - nghiahl
+mkdir .certs
+cd .certs
+openssl genrsa -out nghiahl.key 2048
+sudo sed -i "/^RANDFILE/d" /etc/ssl/openssl.cnf
+openssl req -new -key nghiahl.key -out nghiahl.csr -subj "/CN=nghiahl"
+sudo openssl x509 -req -in nghiahl.csr -CA /etc/kubernetes/pki/ca.crt -CAkey /etc/kubernetes/pki/ca.key -CAcreateserial -out nghiahl.crt -days 730
+sudo -i
+export KUBECONFIG=/etc/kubernetes/admin.conf
+kubectl config set-credentials nghiahl --client-certificate=/home/nghiahl/.certs/nghiahl.crt --client-key=/home/nghiahl/.certs/nghiahl.key
+kubectl config set-context nghiahl-context --cluster=kubernetes --user=nghiahl --namespace=annaspace
+cp /etc/kubernetes/admin.conf /etc/kubernetes/nghiahl.conf
+sed -i -e 's/current-context\: kubernetes-admin\@kubernetes/current-context\: nghiahl-context/' /etc/kubernetes/nghiahl.conf
+kubectl create ns nghiahlspace
+export KUBECONFIG=
+sudo cp /etc/kubernetes/nghiahl.conf .kube/config
+sudo chown nghiahl:nghiahl .kube/config
+kubectl get all
+exit
+git clone https://github.com/sandervanvugt/cka
+cd cka
+kubectl create -f podaccessrole.yaml
+kubectl create -f rolebinding.yaml
+kubectl create deploy roleapp --image=nginx
+kubectl get pods
+su - nghiahl
+kubectl get pods -n default
+kubectl get all
