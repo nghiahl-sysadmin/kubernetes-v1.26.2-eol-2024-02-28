@@ -38,38 +38,40 @@ cfssljson -version
 {
 
 mkdir cert && cd cert
+{
+
 cat > ca-config.json <<EOF
 {
     "signing": {
         "default": {
-            "expiry": "8760h"
+            "expiry": "87600h"
         },
         "profiles": {
             "etcd": {
-                "expiry": "8760h",
-                "usages": ["signing", "key encipherment", "server auth","client auth"]
+                "expiry": "87600h",
+                "usages": ["signing","key encipherment","server auth","client auth"]
             }
         }
     }
-} 
+}
 EOF
 
 cat > ca-csr.json <<EOF
 {
-    "CN": "etcd cluster",
-    "Key": {
-      "algo": "rsa",
-      "size": 2048
-    },
-    "names": [
-      {
-        "C": "VN",
-        "L": "Ho_Chi_Minh",
-        "O": "FPT_Telecom",
-        "OU": "CSOC_ETCD_CA",
-        "ST": "District_7"
-      }
-    ]
+  "CN": "etcd cluster",
+  "key": {
+    "algo": "rsa",
+    "size": 2048
+  },
+  "names": [
+    {
+      "C": "VN",
+      "L": "Vietnam",
+      "O": "Kubernetes",
+      "OU": "ETCD-CA",
+      "ST": "HCM"
+    }
+  ]
 }
 EOF
 
@@ -81,31 +83,31 @@ cfssl gencert -initca ca-csr.json | cfssljson -bare ca
 
 {
 
-export ETCD1_IP="10.10.10.17"
-export ETCD2_IP="10.10.10.18"
+export ETCD1_IP="100.100.100.17"
+export ETCD2_IP="100.100.100.18"
 
 cat > etcd-csr.json <<EOF
 {
-    "CN": "etcd",
-    "hosts": [
-        "localhost",
-        "127.0.0.1",
-        "${ETCD1_IP}",
-        "${ETCD2_IP}"
-    ],
-    "key": {
-      "algo": "rsa",
-      "size": 2048
-    },
-    "names": [
-      {
-        "C": "VN",
-        "L": "Ho_Chi_Minh",
-        "O": "FPT_Telecom",
-        "OU": "CSOC_ETCD_TLS",
-        "ST": "District_7"
-      }
-    ]
+  "CN": "etcd",
+  "hosts": [
+    "localhost",
+    "127.0.0.1",
+    "${ETCD1_IP}",
+    "${ETCD2_IP}"
+  ],
+  "key": {
+    "algo": "rsa",
+    "size": 2048
+  },
+  "names": [
+    {
+      "C": "VN",
+      "L": "Vietnam",
+      "O": "Kubernetes",
+      "OU": "etcd",
+      "ST": "HCM"
+    }
+  ]
 }
 EOF
 
@@ -154,12 +156,12 @@ rm -rf etcd*
 
 {
 
-NODE_IP="10.10.10.17"
+NODE_IP="100.100.100.17"
 
 ETCD_NAME=$(hostname -s)
 
-ETCD1_IP="10.10.10.17"
-ETCD2_IP="10.10.10.18"
+ETCD1_IP="100.100.100.17"
+ETCD2_IP="100.100.100.18"
 
 cat > /etc/systemd/system/etcd.service <<EOF
 [Unit]
@@ -213,7 +215,7 @@ member list
 #Better to export these as environment variables and connect to the clutser instead of a specific node
 
 export ETCDCTL_API=3 
-export ETCDCTL_ENDPOINTS=https://10.10.10.17:2379,https://10.10.10.18:2379
+export ETCDCTL_ENDPOINTS=https://100.100.100.17:2379,https://100.100.100.18:2379
 export ETCDCTL_CACERT=/etc/etcd/pki/ca.pem
 export ETCDCTL_CERT=/etc/etcd/pki/etcd.pem
 export ETCDCTL_KEY=/etc/etcd/pki/etcd-key.pem
