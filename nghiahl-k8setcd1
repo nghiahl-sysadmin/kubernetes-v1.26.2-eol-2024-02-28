@@ -1,1 +1,16 @@
-etcd --name nghiahl-k8setcd1 --cert-file=/etc/etcd/pki/etcd.pem --key-file=/etc/etcd/pki/etcd-key.pem --peer-cert-file=/etc/etcd/pki/etcd.pem --peer-key-file=/etc/etcd/pki/etcd-key.pem --trusted-ca-file=/etc/etcd/pki/ca.pem --peer-trusted-ca-file=/etc/etcd/pki/ca.pem --peer-client-cert-auth=true --initial-advertise-peer-urls https://100.100.100.17:2380 --listen-peer-urls https://0.0.0.0:2380 --listen-client-urls https://0.0.0.0:2379 --advertise-client-urls https://100.100.100.17:2379 --initial-cluster-token etcd-cluster-1 --initial-cluster nghiahl-k8setcd1=https://100.100.100.17:2380,nghiahl-k8setcd2=https://100.100.100.18:2380 --initial-cluster-state new 
+etcd --name nghiahl-k8setcd1 \
+     --cert-file=/etc/etcd/pki/etcd.pem \
+     --key-file=/etc/etcd/pki/etcd-key.pem \
+     --peer-cert-file=/etc/etcd/pki/etcd.pem \
+     --peer-key-file=/etc/etcd/pki/etcd-key.pem \
+     --trusted-ca-file=/etc/etcd/pki/ca.pem \
+     --peer-trusted-ca-file=/etc/etcd/pki/ca.pem \
+     --peer-client-cert-auth=true \
+     --initial-advertise-peer-urls https://100.100.100.17:2380 \
+     --listen-peer-urls https://100.100.100.17:2380 \
+     --listen-client-urls https://100.100.100.17:2379 \
+     --advertise-client-urls https://100.100.100.17:2379 \
+     --initial-cluster-token etcd-cluster-1 \
+     --initial-cluster nghiahl-k8setcd1=https://100.100.100.17:2380,nghiahl-k8setcd2=https://100.100.100.18:2380 \
+     --data-dir=/var/lib/etcd \
+     --initial-cluster-state new
