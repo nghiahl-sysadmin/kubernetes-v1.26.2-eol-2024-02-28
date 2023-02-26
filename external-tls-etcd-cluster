@@ -43,11 +43,11 @@ cat > ca-config.json <<EOF
 {
     "signing": {
         "default": {
-            "expiry": "876000h"
+            "expiry": "8760h"
         },
         "profiles": {
             "etcd": {
-                "expiry": "876000h",
+                "expiry": "8760h",
                 "usages": ["signing","key encipherment","server auth","client auth"]
             }
         }
@@ -60,13 +60,13 @@ cat > ca-csr.json <<EOF
   "CN": "ETCD Cluster",
   "key": {
     "algo": "rsa",
-    "size": 4096
+    "size": 2048
   },
   "names": [
     {
       "C": "VN",
       "L": "Vietnam",
-      "O": "Kubernetes",
+      "O": "FPT Telecom",
       "OU": "ETCD-CA",
       "ST": "HCM"
     }
@@ -96,13 +96,13 @@ cat > etcd-csr.json <<EOF
   ],
   "key": {
     "algo": "rsa",
-    "size": 4096
+    "size": 2048
   },
   "names": [
     {
       "C": "VN",
       "L": "Vietnam",
-      "O": "Kubernetes",
+      "O": "FPT Telecom",
       "OU": "ETCD-TLS",
       "ST": "HCM"
     }
