@@ -38,7 +38,6 @@ cfssljson -version
 {
 
 mkdir cert && cd cert
-{
 
 cat > ca-config.json <<EOF
 {
