@@ -156,12 +156,12 @@ rm -rf etcd*
 
 {
 
-NODE_IP="100.100.100.17"
+NODE_IP="100.100.100.17" #Change the correct ip of the server etcd
 
 ETCD_NAME=$(hostname -s)
 
-ETCD1_IP="100.100.100.17"
-ETCD2_IP="100.100.100.18"
+ETCD1_IP="100.100.100.17" #Change the correct ip of the server etcd
+ETCD2_IP="100.100.100.18" #Change the correct ip of the server etcd
 
 cat > /etc/systemd/system/etcd.service <<EOF
 [Unit]
@@ -170,7 +170,7 @@ After=network.target
 
 [Service]
 Type=notify
-ExecStart=/usr/local/bin/etcd etcd --name ${ETCD_NAME} --cert-file=/etc/etcd/pki/etcd.pem --key-file=/etc/etcd/pki/etcd-key.pem --peer-cert-file=/etc/etcd/pki/etcd.pem --peer-key-file=/etc/etcd/pki/etcd-key.pem --trusted-ca-file=/etc/etcd/pki/ca.pem --peer-trusted-ca-file=/etc/etcd/pki/ca.pem --peer-client-cert-auth=true --initial-advertise-peer-urls https://${NODE_IP}:2380 --listen-peer-urls https://${NODE_IP}:2380 --listen-client-urls https://${NODE_IP}:2379 --advertise-client-urls https://${NODE_IP}:2379 --initial-cluster-token etcd-cluster-1 --initial-cluster nghiahl-k8setcd1=https://${ETCD1_IP}:2380,nghiahl-k8setcd2=https://${ETCD2_IP}:2380 --data-dir=/var/lib/etcd --initial-cluster-state new
+ExecStart=/usr/local/bin/etcd --name ${ETCD_NAME} --cert-file=/etc/etcd/pki/etcd.pem --key-file=/etc/etcd/pki/etcd-key.pem --peer-cert-file=/etc/etcd/pki/etcd.pem --peer-key-file=/etc/etcd/pki/etcd-key.pem --trusted-ca-file=/etc/etcd/pki/ca.pem --peer-trusted-ca-file=/etc/etcd/pki/ca.pem --peer-client-cert-auth=true --initial-advertise-peer-urls https://${NODE_IP}:2380 --listen-peer-urls https://${NODE_IP}:2380 --listen-client-urls https://${NODE_IP}:2379 --advertise-client-urls https://${NODE_IP}:2379 --initial-cluster-token etcd-cluster-1 --initial-cluster nghiahl-k8setcd1=https://${ETCD1_IP}:2380,nghiahl-k8setcd2=https://${ETCD2_IP}:2380 --data-dir=/var/lib/etcd --initial-cluster-state new
 Restart=on-failure
 RestartSec=5
 
