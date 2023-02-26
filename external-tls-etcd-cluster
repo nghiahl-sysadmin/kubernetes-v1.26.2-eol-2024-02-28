@@ -43,11 +43,11 @@ cat > ca-config.json <<EOF
 {
     "signing": {
         "default": {
-            "expiry": "8760h"
+            "expiry": "87600h"
         },
         "profiles": {
             "etcd": {
-                "expiry": "8760h",
+                "expiry": "87600h",
                 "usages": ["signing","key encipherment","server auth","client auth"]
             }
         }
@@ -57,7 +57,7 @@ EOF
 
 cat > ca-csr.json <<EOF
 {
-  "CN": "ETCD Cluster",
+  "CN": "ETCD CLUSTER",
   "key": {
     "algo": "rsa",
     "size": 2048
@@ -67,8 +67,8 @@ cat > ca-csr.json <<EOF
       "C": "VN",
       "L": "Vietnam",
       "O": "FPT Telecom",
-      "OU": "ETCD-CA",
-      "ST": "HCM"
+      "OU": "CSOC ETCD CA",
+      "ST": "Ho Chi Minh"
     }
   ]
 }
@@ -87,7 +87,7 @@ export ETCD2_IP="100.100.100.18"
 
 cat > etcd-csr.json <<EOF
 {
-  "CN": "etcd",
+  "CN": "ETCD",
   "hosts": [
     "localhost",
     "127.0.0.1",
@@ -103,8 +103,8 @@ cat > etcd-csr.json <<EOF
       "C": "VN",
       "L": "Vietnam",
       "O": "FPT Telecom",
-      "OU": "ETCD-TLS",
-      "ST": "HCM"
+      "OU": "CSOC ETCD TLS",
+      "ST": "Ho Chi Minh"
     }
   ]
 }
