@@ -44,11 +44,11 @@ cat > ca-config.json <<EOF
 {
     "signing": {
         "default": {
-            "expiry": "87600h"
+            "expiry": "876000h"
         },
         "profiles": {
             "etcd": {
-                "expiry": "87600h",
+                "expiry": "876000h",
                 "usages": ["signing","key encipherment","server auth","client auth"]
             }
         }
@@ -58,7 +58,7 @@ EOF
 
 cat > ca-csr.json <<EOF
 {
-  "CN": "etcd cluster",
+  "CN": "ETCD Cluster",
   "key": {
     "algo": "rsa",
     "size": 2048
@@ -104,7 +104,7 @@ cat > etcd-csr.json <<EOF
       "C": "VN",
       "L": "Vietnam",
       "O": "Kubernetes",
-      "OU": "etcd",
+      "OU": "ETCD-TLS",
       "ST": "HCM"
     }
   ]
@@ -119,8 +119,7 @@ cfssl gencert -ca=ca.pem -ca-key=ca-key.pem -config=ca-config.json -profile=etcd
 
 {
 
-declare -a NODES=(10.10.10.17 10.10.10.18)
-
+declare -a NODES=(100.100.100.17 100.100.100.18)
 for node in ${NODES[@]}; do
   scp ca.pem etcd.pem etcd-key.pem root@$node: 
 done
@@ -136,7 +135,6 @@ done
   mv ca.pem etcd.pem etcd-key.pem /etc/etcd/pki/
   ls -l /etc/etcd/pki
   mkdir -p /var/lib/etcd/
-  chown -R root:root /var/lib/etcd/
 
 }
 
@@ -190,7 +188,14 @@ EOF
 #Verify Etcd cluster status
 
 etcdctl \
---endpoints=https://127.0.0.1:2379 \
+--endpoints=https://100.100.100.17:2379 \
+--cacert=/etc/etcd/pki/ca.pem \
+--cert=/etc/etcd/pki/etcd.pem \
+--key=/etc/etcd/pki/etcd-key.pem \
+member list
+
+etcdctl \
+--endpoints=https://100.100.100.18:2379 \
 --cacert=/etc/etcd/pki/ca.pem \
 --cert=/etc/etcd/pki/etcd.pem \
 --key=/etc/etcd/pki/etcd-key.pem \
@@ -209,5 +214,6 @@ export ETCDCTL_KEY=/etc/etcd/pki/etcd-key.pem
 etcdctl member list
 etcdctl endpoint status
 etcdctl endpoint health
-curl -L http://localhost:2379/health | grep -v debugging
+curl -L https://100.100.100.17:2379/health | grep -v debugging
+curl -L https://100.100.100.18:2379/health | grep -v debugging
 journalctl -xe -u etcd.service
