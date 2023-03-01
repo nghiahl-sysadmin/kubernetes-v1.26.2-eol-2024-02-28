@@ -206,7 +206,7 @@ member list
 #Better to export these as environment variables and connect to the clutser instead of a specific node
 
 export ETCDCTL_API=3 
-export ETCDCTL_ENDPOINTS=https://100.100.100.17:2379,https://100.100.100.18:2379
+export ETCDCTL_ENDPOINTS=https://100.100.100.17:2379,https://100.100.100.18:2379,https://100.100.100.19:2379
 export ETCDCTL_CACERT=/etc/etcd/pki/ca.pem
 export ETCDCTL_CERT=/etc/etcd/pki/etcd.pem
 export ETCDCTL_KEY=/etc/etcd/pki/etcd-key.pem
