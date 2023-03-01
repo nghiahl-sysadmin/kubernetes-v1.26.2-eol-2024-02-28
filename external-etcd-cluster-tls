@@ -170,7 +170,7 @@ After=network.target
 
 [Service]
 Type=notify
-ExecStart=/usr/local/bin/etcd --name ${ETCD_NAME} --cert-file=/etc/etcd/pki/etcd.pem --key-file=/etc/etcd/pki/etcd-key.pem --peer-cert-file=/etc/etcd/pki/etcd.pem --peer-key-file=/etc/etcd/pki/etcd-key.pem --trusted-ca-file=/etc/etcd/pki/ca.pem --peer-trusted-ca-file=/etc/etcd/pki/ca.pem --peer-client-cert-auth=true --initial-election-tick-advance=true --initial-advertise-peer-urls https://${NODE_IP}:2380 --listen-peer-urls https://${NODE_IP}:2380 --listen-client-urls https://${NODE_IP}:2379 --advertise-client-urls https://${NODE_IP}:2379 --initial-cluster-token etcd-cluster-1 --initial-cluster nghiahl-k8setcd1=https://${ETCD1_IP}:2380,nghiahl-k8setcd2=https://${ETCD2_IP}:2380,,nghiahl-k8setcd3=https://${ETCD3_IP}:2380 --data-dir=/var/lib/etcd --initial-cluster-state=existing --initial-cluster-state new
+ExecStart=/usr/local/bin/etcd --name ${ETCD_NAME} --cert-file=/etc/etcd/pki/etcd.pem --key-file=/etc/etcd/pki/etcd-key.pem --peer-cert-file=/etc/etcd/pki/etcd.pem --peer-key-file=/etc/etcd/pki/etcd-key.pem --trusted-ca-file=/etc/etcd/pki/ca.pem --peer-trusted-ca-file=/etc/etcd/pki/ca.pem --peer-client-cert-auth=true --initial-election-tick-advance=true --initial-advertise-peer-urls https://${NODE_IP}:2380 --listen-peer-urls https://${NODE_IP}:2380 --listen-client-urls https://${NODE_IP}:2379 --advertise-client-urls https://${NODE_IP}:2379 --initial-cluster-token etcd-cluster-1 --initial-cluster nghiahl-k8setcd1=https://${ETCD1_IP}:2380,nghiahl-k8setcd2=https://${ETCD2_IP}:2380,nghiahl-k8setcd3=https://${ETCD3_IP}:2380 --data-dir=/var/lib/etcd --initial-cluster-state=existing --initial-cluster-state new
 Restart=on-failure
 RestartSec=5
 
