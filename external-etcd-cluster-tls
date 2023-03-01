@@ -216,3 +216,4 @@ etcdctl endpoint health
 curl -L https://100.100.100.17:2379/health | grep -v debugging
 curl -L https://100.100.100.18:2379/health | grep -v debugging
 journalctl -xe -u etcd.service
+etcdctl endpoint status --cluster -w table
