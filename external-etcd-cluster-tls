@@ -203,6 +203,13 @@ etcdctl \
 --key=/etc/etcd/pki/etcd-key.pem \
 member list
 
+etcdctl \
+--endpoints=https://100.100.100.19:2379 \
+--cacert=/etc/etcd/pki/ca.pem \
+--cert=/etc/etcd/pki/etcd.pem \
+--key=/etc/etcd/pki/etcd-key.pem \
+member list
+
 #Better to export these as environment variables and connect to the clutser instead of a specific node
 
 export ETCDCTL_API=3 
@@ -218,5 +225,6 @@ etcdctl endpoint status
 etcdctl endpoint health
 curl -L https://100.100.100.17:2379/health | grep -v debugging
 curl -L https://100.100.100.18:2379/health | grep -v debugging
+curl -L https://100.100.100.19:2379/health | grep -v debugging
 journalctl -xe -u etcd.service
 etcdctl endpoint status --cluster -w table
