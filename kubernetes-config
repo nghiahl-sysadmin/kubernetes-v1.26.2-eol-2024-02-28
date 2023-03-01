@@ -1,7 +1,7 @@
 *************************Install in Control Plane*************************
 
 kubeadm init --control-plane-endpoint="10.10.10.10:6443" --upload-certs --apiserver-advertise-address=10.10.10.13 --pod-network-cidr=192.168.0.0/16 --cri-socket=unix:///run/containerd/containerd.sock
-
+kubeadm init --config=kubeadm-config.yaml --upload-certs
 mkdir -p $HOME/.kube
 sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
 sudo chown $(id -u):$(id -g) $HOME/.kube/config
