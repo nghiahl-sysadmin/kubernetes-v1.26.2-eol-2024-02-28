@@ -1,8 +1,8 @@
 #!/bin/bash
 apt -y update
 DEBIAN_FRONTEND=noninteractive apt -y upgrade
-wget https://github.com/containerd/containerd/releases/download/v1.6.14/containerd-1.6.14-linux-amd64.tar.gz
-sudo tar Czxvf /usr/local containerd-1.6.14-linux-amd64.tar.gz
+wget https://github.com/containerd/containerd/releases/download/v1.6.18/containerd-1.6.18-linux-amd64.tar.gz
+sudo tar Czxvf /usr/local containerd-1.6.18-linux-amd64.tar.gz
 wget https://raw.githubusercontent.com/containerd/containerd/main/containerd.service
 sudo mv containerd.service /usr/lib/systemd/system/
 wget https://github.com/opencontainers/runc/releases/download/v1.1.4/runc.amd64
@@ -10,7 +10,7 @@ sudo install -m 755 runc.amd64 /usr/local/sbin/runc
 sudo mkdir -p /etc/containerd/
 containerd config default | sudo tee /etc/containerd/config.toml
 sudo sed -i 's/SystemdCgroup \= false/SystemdCgroup \= true/g' /etc/containerd/config.toml
-rm -rf containerd-1.6.14-linux-amd64.tar.gz
+rm -rf containerd-1.6.18-linux-amd64.tar.gz
 rm -rf runc.amd64
 sudo systemctl daemon-reload && systemctl enable --now containerd && systemctl status containerd
 cat > /etc/sysctl.d/99-k8s-cri.conf <<EOF
