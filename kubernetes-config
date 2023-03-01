@@ -19,9 +19,19 @@ echo $(kubeadm token create --print-join-command) --control-plane --certificate-
 kubeadm reset
 + Bonus
 
+{ clear && \
+  echo -e "\n=== Kubernetes Status ===\n" && \
+  kubectl get --raw '/healthz?verbose' && \
+  kubectl version --short && \
+  kubectl get nodes && \
+  kubectl cluster-info; 
+} | grep -z 'Ready\| ok\|passed\|running'
+
 kubectl rollout restart deployment coredns --namespace kube-system
 kubeadm init phase upload-certs --upload-cert
 kubectl describe nodes | egrep "Taints:|Name:"
+
+lvextend --resizefs -l +100%FREE /dev/mapper/ubuntu--vg-ubuntu--lv
 *************************Reference Library*************************
 
 https://viblo.asia/p/kubernetes-practice-logging-with-logstash-and-fluentd-by-sidecar-container-LzD5doreljY?fbclid=IwAR09qbmmmBzjXIvEdkE2IEAxvCYjGjPrGV1hXIeCcT97KDSPyhuoB1iOpK0
