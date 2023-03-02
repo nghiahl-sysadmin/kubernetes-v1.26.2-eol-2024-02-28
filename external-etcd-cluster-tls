@@ -82,9 +82,9 @@ cfssl gencert -initca ca-csr.json | cfssljson -bare ca
 
 {
 
-export ETCD1_IP="100.100.100.17"
-export ETCD2_IP="100.100.100.18"
-export ETCD3_IP="100.100.100.19"
+export ETCD1_IP="100.100.100.19"
+export ETCD2_IP="100.100.100.20"
+export ETCD3_IP="100.100.100.21"
 
 cat > etcd-csr.json <<EOF
 {
@@ -120,7 +120,7 @@ cfssl gencert -ca=ca.pem -ca-key=ca-key.pem -config=ca-config.json -profile=etcd
 
 {
 
-declare -a NODES=(100.100.100.17 100.100.100.18 100.100.100.19)
+declare -a NODES=(100.100.100.13 100.100.100.19 100.100.100.20 100.100.100.21)
 for node in ${NODES[@]}; do
   scp ca.pem etcd.pem etcd-key.pem root@$node: 
 done
@@ -155,13 +155,13 @@ rm -rf etcd*
 
 {
 
-NODE_IP="100.100.100.17" #Change the correct ip of the server etcd
+NODE_IP="100.100.100.19" #Change the correct ip of the server etcd
 
 ETCD_NAME=$(hostname -s)
 
-ETCD1_IP="100.100.100.17" #Change the correct ip of the server etcd
-ETCD2_IP="100.100.100.18" #Change the correct ip of the server etcd
-ETCD3_IP="100.100.100.19" #Change the correct ip of the server etcd
+ETCD1_IP="100.100.100.19" #Change the correct ip of the server etcd
+ETCD2_IP="100.100.100.20" #Change the correct ip of the server etcd
+ETCD3_IP="100.100.100.21" #Change the correct ip of the server etcd
 
 cat > /etc/systemd/system/etcd.service <<EOF
 [Unit]
@@ -190,21 +190,21 @@ EOF
 #Verify Etcd cluster status
 
 etcdctl \
---endpoints=https://100.100.100.17:2379 \
---cacert=/etc/etcd/pki/ca.pem \
---cert=/etc/etcd/pki/etcd.pem \
---key=/etc/etcd/pki/etcd-key.pem \
-member list
-
-etcdctl \
---endpoints=https://100.100.100.18:2379 \
---cacert=/etc/etcd/pki/ca.pem \
---cert=/etc/etcd/pki/etcd.pem \
---key=/etc/etcd/pki/etcd-key.pem \
-member list
-
-etcdctl \
 --endpoints=https://100.100.100.19:2379 \
+--cacert=/etc/etcd/pki/ca.pem \
+--cert=/etc/etcd/pki/etcd.pem \
+--key=/etc/etcd/pki/etcd-key.pem \
+member list
+
+etcdctl \
+--endpoints=https://100.100.100.20:2379 \
+--cacert=/etc/etcd/pki/ca.pem \
+--cert=/etc/etcd/pki/etcd.pem \
+--key=/etc/etcd/pki/etcd-key.pem \
+member list
+
+etcdctl \
+--endpoints=https://100.100.100.21:2379 \
 --cacert=/etc/etcd/pki/ca.pem \
 --cert=/etc/etcd/pki/etcd.pem \
 --key=/etc/etcd/pki/etcd-key.pem \
@@ -213,7 +213,7 @@ member list
 #Better to export these as environment variables and connect to the clutser instead of a specific node
 
 export ETCDCTL_API=3 
-export ETCDCTL_ENDPOINTS=https://100.100.100.17:2379,https://100.100.100.18:2379,https://100.100.100.19:2379
+export ETCDCTL_ENDPOINTS=https://100.100.100.19:2379,https://100.100.100.20:2379,https://100.100.100.21:2379
 export ETCDCTL_CACERT=/etc/etcd/pki/ca.pem
 export ETCDCTL_CERT=/etc/etcd/pki/etcd.pem
 export ETCDCTL_KEY=/etc/etcd/pki/etcd-key.pem
@@ -223,8 +223,8 @@ export ETCDCTL_KEY=/etc/etcd/pki/etcd-key.pem
 etcdctl member list
 etcdctl endpoint status
 etcdctl endpoint health
-curl -L https://100.100.100.17:2379/health | grep -v debugging
-curl -L https://100.100.100.18:2379/health | grep -v debugging
 curl -L https://100.100.100.19:2379/health | grep -v debugging
+curl -L https://100.100.100.20:2379/health | grep -v debugging
+curl -L https://100.100.100.21:2379/health | grep -v debugging
 journalctl -xe -u etcd.service
 etcdctl endpoint status --cluster -w table
