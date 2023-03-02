@@ -4,7 +4,7 @@
   tasks:
     - name: Download bash script from github
       get_url:
-        url: "https://raw.githubusercontent.com/nghiahl-sysadmin/kubernetes-v1.26.1-eol-2024-02-28/main/install_environment_kubernetes.sh"
+        url: "https://raw.githubusercontent.com/nghiahl-sysadmin/kubernetes-v1.26.2-eol-2024-02-28/main/install_environment_kubernetes.sh"
         dest: "/tmp/install_environment_kubernetes.sh"
         mode: '0755'
         
