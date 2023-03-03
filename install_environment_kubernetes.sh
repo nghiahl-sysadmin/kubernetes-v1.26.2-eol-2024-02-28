@@ -1,6 +1,5 @@
 #!/bin/bash
 apt -y update
-DEBIAN_FRONTEND=noninteractive apt -y upgrade
 timedatectl set-timezone Asia/Ho_Chi_Minh
 wget https://github.com/containerd/containerd/releases/download/v1.6.18/containerd-1.6.18-linux-amd64.tar.gz
 sudo tar Czxvf /usr/local containerd-1.6.18-linux-amd64.tar.gz
