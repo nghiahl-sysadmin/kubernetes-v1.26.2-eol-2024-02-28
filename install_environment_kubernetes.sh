@@ -1,5 +1,6 @@
 #!/bin/bash
 apt -y update
+echo 'nameserver 100.100.100.100' > /etc/resolv.conf
 timedatectl set-timezone Asia/Ho_Chi_Minh
 wget https://github.com/containerd/containerd/releases/download/v1.6.18/containerd-1.6.18-linux-amd64.tar.gz
 sudo tar Czxvf /usr/local containerd-1.6.18-linux-amd64.tar.gz
