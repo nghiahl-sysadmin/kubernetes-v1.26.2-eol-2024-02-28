@@ -31,7 +31,7 @@ kubectl rollout restart deployment coredns --namespace kube-system
 kubeadm init phase upload-certs --upload-cert
 kubectl describe nodes | egrep "Taints:|Name:"
 kubeadm config migrate --old-config=kubeadm-config.yaml --new-config=kubeadm-config-new.yaml
-
+DEBIAN_FRONTEND=noninteractive apt -y upgrade
 lvextend --resizefs -l +100%FREE /dev/mapper/ubuntu--vg-ubuntu--lv
 *************************Reference Library*************************
 
