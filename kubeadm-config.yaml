@@ -6,9 +6,11 @@ controlPlaneEndpoint: "100.100.100.10:6443"
 etcd:
   external:
     endpoints:
-      - https://100.100.100.17:2379
-      - https://100.100.100.18:2379
       - https://100.100.100.19:2379
+      - https://100.100.100.20:2379
+      - https://100.100.100.21:2379
     caFile: /etc/kubernetes/pki/etcd/ca.pem
     certFile: /etc/kubernetes/pki/etcd/etcd.pem
     keyFile: /etc/kubernetes/pki/etcd/etcd-key.pem
+networking:
+  podSubnet: 192.168.0.0/16
